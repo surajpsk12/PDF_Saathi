@@ -56,7 +56,11 @@ dependencies {
 
     // Hilt
     implementation(libs.hilt.android)
+    implementation(libs.androidx.ui)
+    implementation(libs.androidx.material3)
+    implementation(libs.androidx.compose.foundation.layout)
     ksp(libs.hilt.compiler)
+    implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
 
     // Room
     implementation(libs.room.runtime)
@@ -68,6 +72,9 @@ dependencies {
 
     // Coroutines
     implementation(libs.kotlinx.coroutines.android)
+
+    // navigation
+    implementation("androidx.navigation:navigation-compose:2.7.7")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
