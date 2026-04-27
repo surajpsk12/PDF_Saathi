@@ -1,5 +1,7 @@
 package com.surajvanshsv.pdfsaathinew.ui.home
 
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,6 +15,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import android.net.Uri
+import android.util.Log
+import androidx.compose.material3.Button
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 
 
@@ -21,7 +27,19 @@ fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel()
 ){
 
+    val context = LocalContext.current
+
     val pdfList = viewModel.pdfList
+
+    val folderPickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.OpenDocumentTree()
+    ){ uri: Uri? ->
+        uri?.let {
+            viewModel.loadPdfsFromUri(context, it)
+        }
+
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -32,6 +50,12 @@ fun HomeScreen(
             style=MaterialTheme.typography.headlineMedium
         )
         Spacer(modifier = Modifier.height(16.dp))
+
+        Button(onClick = {
+            folderPickerLauncher.launch(null)
+        }) {
+            Text(text="Select Folder")
+        }
 
         LazyColumn {
             items(pdfList){

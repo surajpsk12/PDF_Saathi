@@ -12,7 +12,9 @@ import com.surajvanshsv.pdfsaathinew.domain.usecase.GetPdfFilesUseCase
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-
+import android.content.Context
+import android.net.Uri
+import androidx.documentfile.provider.DocumentFile
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
@@ -36,5 +38,27 @@ class HomeViewModel @Inject constructor(
             pdfList = result
         }
 
+    }
+
+    fun loadPdfsFromUri(context: Context, uri: Uri) {
+
+        val result = mutableListOf<PdfDocument>()
+
+        val pickedDir = DocumentFile.fromTreeUri(context, uri)
+
+        pickedDir?.listFiles()?.forEach { file ->
+
+            if (file.name?.endsWith(".pdf") == true) {
+                result.add(
+                    PdfDocument(
+                        name = file.name ?: "Unknown",
+                        path = file.uri.toString(),
+                        size = file.length()
+                    )
+                )
+            }
+        }
+
+        pdfList = result
     }
 }
