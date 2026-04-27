@@ -17,13 +17,18 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import android.net.Uri
 import android.util.Log
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Button
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+
 
 
 @Composable
 fun HomeScreen(
+    navController: NavController ,
     viewModel: HomeViewModel = hiltViewModel()
 ){
 
@@ -60,10 +65,15 @@ fun HomeScreen(
         LazyColumn {
             items(pdfList){
                 pdf ->
+
                 Text(
-                    text=pdf.name,
-                    style = MaterialTheme.typography.bodyLarge,
-                    modifier = Modifier.padding(8.dp)
+                    text = pdf.name,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable {
+                            navController.navigate("viewer/${pdf.path}")
+                        }
+                        .padding(8.dp)
                 )
 
             }
@@ -72,8 +82,3 @@ fun HomeScreen(
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun HomeScreenPreview(){
-    HomeScreen()
-}
