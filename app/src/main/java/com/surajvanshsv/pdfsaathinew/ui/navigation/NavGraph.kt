@@ -8,6 +8,9 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.surajvanshsv.pdfsaathinew.ui.home.HomeScreen
 import com.surajvanshsv.pdfsaathinew.ui.viewer.PdfViewerScreen
+import java.net.URLDecoder
+import java.nio.charset.StandardCharsets
+
 
 @Composable
 fun NavGraph(){
@@ -29,7 +32,8 @@ fun NavGraph(){
             )
         ){
             backStackEntry ->
-                val pdfPath = backStackEntry.arguments?.getString("pdfPath") ?: ""
+            val encodedPath = backStackEntry.arguments?.getString("pdfPath") ?: ""
+            val pdfPath = URLDecoder.decode(encodedPath, StandardCharsets.UTF_8.toString())
 
             PdfViewerScreen(pdfPath)
         }

@@ -23,6 +23,8 @@ import androidx.compose.material3.Button
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
 
 
 
@@ -71,7 +73,9 @@ fun HomeScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .clickable {
-                            navController.navigate("viewer/${pdf.path}")
+                            val encodedPath = URLEncoder.encode(pdf.path, StandardCharsets.UTF_8.toString())
+
+                            navController.navigate("viewer/$encodedPath")
                         }
                         .padding(8.dp)
                 )
