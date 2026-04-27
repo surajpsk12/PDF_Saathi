@@ -10,6 +10,10 @@ import com.surajvanshsv.pdfsaathinew.ui.home.HomeScreen
 import com.surajvanshsv.pdfsaathinew.ui.navigation.NavGraph
 import com.surajvanshsv.pdfsaathinew.ui.theme.PdfsaathinewTheme
 import dagger.hilt.android.AndroidEntryPoint
+import android.Manifest
+import android.content.pm.PackageManager
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 
 
 @AndroidEntryPoint
@@ -17,13 +21,30 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        requestPermission()
         setContent {
             PdfsaathinewTheme {
                 NavGraph()
             }
         }
     }
+    private fun requestPermission(){
+        if (ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
+                100
+            )
+        }
+
+    }
 }
+
+
 
 
 @Preview(showBackground = true)
